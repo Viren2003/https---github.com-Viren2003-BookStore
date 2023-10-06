@@ -1,3 +1,3 @@
 ﻿# Book-store
 ## by Dev muliya
-(github)[https://github.com/Devmuliya16]
+[github](https://github.com/Devmuliya16)
