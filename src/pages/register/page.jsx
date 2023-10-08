@@ -8,6 +8,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../App";
+import Cookies from "js-cookie";
+
 
 const Register = () => {
   const navigate = useNavigate();
@@ -31,13 +33,45 @@ const Register = () => {
           .min(8, "Must be 8 characters or more")
           .required("Required"),
       }),
-      onSubmit: async (values) => {},
+      onSubmit: async (detail) => {
+        try {
+          const { data } = await axios.post(
+            `https://book-e-sell-node-api.vercel.app/api/user`,
+            detail
+          );
+          toast("success", { position: "bottom-right" });
+          SetUser(data.result);
+          Cookies.set("id", `${data.result.id}`);
+          navigate("/");
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            console.log(error.response.data);
+          }
+          toast(error.response.data.error);
+        }
+      },
     }
   );
   return (
     <>
       <div className="flex flex-col max-w-xl gap-3 p-4  mx-auto my-20 ">
         <h1 className="text-3xl font-semibold text-center">Register</h1>
+        <label>Fist name</label>
+        <Input
+          type="text"
+          id="firstName"
+          label="firstName"
+          {...getFieldProps("firstName")}
+          className="border border-black"
+        />
+        <label>Last name</label>
+        <Input
+          type="text"
+          id="lastName"
+          label="lastName"
+          {...getFieldProps("lastName")}
+          className="border border-black"
+        />
         <label>Email</label>
         <Input
           type="text"
@@ -57,12 +91,13 @@ const Register = () => {
           {...getFieldProps("password")}
           className="border border-black"
         />
+        
         {touched.password && errors.password ? (
           <p className="text-red-500">{errors.password}</p>
         ) : null}
 
-        <Button onClick={() => handleSubmit()}>Register</Button>
-      </div>{" "}
+        <Button onClick={() => handleSubmit()} type="submit">Register</Button>
+      </div>
     </>
   );
 };
