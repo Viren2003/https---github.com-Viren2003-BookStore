@@ -1,5 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
+import { Link } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useContext } from "react";
@@ -11,25 +10,26 @@ const Navbar = () => {
   return (
     <>
       <div className="w-full font-poppins">
-        <div className="flex justify-between max-w-6xl mx-auto py-4 ">
-          <div className="font-bold text-2xl">
-            <Link to="/"> Bookstore </Link>
+        <div className="flex items-center justify-between max-w-6xl mx-auto py-4 ">
+          <div className="font-bold text-2xl flex items-center">
+            <img src=" /public/images/logo.jpg" className="w-12 mr-2"/>
+            <Link to="/"> EBookstore </Link>
           </div>
           {user.email ? (
             <div className="flex gap-4 align-middle">
-              <p className="my-auto text-red-500">Hi,{user.firstName}</p>
-              <Link className="my-auto" to="/users">
+              <p className="my-auto text-red-500">Hi, {user.firstName}</p>
+              {user.role=== "admin" && <Link className="my-auto" to="/users">
                 Users
-              </Link>
-              <Link className="my-auto" to="/books">
+              </Link>}
+              {user.role!="buyer" && <Link className="my-auto" to="/books">
                 Books
-              </Link>
-              <Link className="my-auto" to="/category">
+              </Link>}
+              {user.role!="buyer" && <Link className="my-auto" to="/category">
                 Category
-              </Link>
-              <Link className="my-auto" to="/cart">
+              </Link>}
+              {user.role==="buyer" && <Link className="my-auto" to="/cart">
                 Cart
-              </Link>
+              </Link>}
               <Button
                 onClick={() => {
                   Cookies.remove("id");

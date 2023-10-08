@@ -20,6 +20,18 @@ import CartPage from "./pages/cart/page";
 
 export const AuthContext = createContext({});
 
+let user = false;
+
+if (Cookies.get("id")) {
+    const { data } = await axios.get(
+      `${API_URL}/api/user/byId?id=${Cookies.get("id")}`
+    );
+    user = data.result;
+}
+
+
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,19 +55,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/users",
-        element: <UsersList />,
+        element: user.role!=="buyer" ? <UsersList />: <h1>not found</h1>,
       },
       {
         path: "/books/add",
-        element: <AddBook />,
+        element: user.role==="seller" ? <AddBook /> : <h1>not found</h1>,
       },
       {
         path: "/category",
-        element: <Category />,
+        element: user.role!=="buyer" ? <Category />: <h1>not found</h1>,
       },
       {
         path: "/category/add",
-        element: <AddCategory />,
+        element: user.role!=="buyer" ? <AddCategory /> : <h1>not found</h1>,
       },
       {
         path: "/cart",

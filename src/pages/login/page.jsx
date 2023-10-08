@@ -39,8 +39,8 @@ export default function Login({}) {
         } catch (error) {
           if (error instanceof AxiosError) {
             console.log(error.response.data);
-            toast(error.response.data.error);
           }
+          toast(error.response.data.error);
         }
       },
     }
@@ -72,7 +72,7 @@ export default function Login({}) {
         {touched.password && errors.password ? (
           <p className="text-red-500">{errors.password}</p>
         ) : null}
-        <Button onClick={() => handleSubmit()}>Login</Button>
+        <Button onClick={() => handleSubmit()} type="submit">Login</Button>
       </div>
     </>
   );
